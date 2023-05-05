@@ -33,7 +33,12 @@ public class SubscriptionService {
         subscription.setUser(user);
 
         int subscriptionAmount = getSubscriptionTypeAmount(subscription.getSubscriptionType());
-        int totalAmount = subscriptionAmount * subscription.getNoOfScreensSubscribed();
+
+        int totalAmount = 0;
+
+        if (subscriptionAmount == 500) totalAmount = subscriptionAmount + (200 * subscription.getNoOfScreensSubscribed());
+        else if (subscriptionAmount == 800) totalAmount = subscriptionAmount + (250 * subscription.getNoOfScreensSubscribed());
+        else if (subscriptionAmount == 1000) totalAmount = subscriptionAmount + (350 * subscription.getNoOfScreensSubscribed());
 
         subscription.setTotalAmountPaid(totalAmount);
 
@@ -62,7 +67,14 @@ public class SubscriptionService {
         }
 
         int currentPrice = currentSubscription.getTotalAmountPaid();
-        int newPrice = getSubscriptionTypeAmount(newSubscriptionType) * currentSubscription.getNoOfScreensSubscribed();
+        int newPrice = 0;
+        int subscriptionAmount = getSubscriptionTypeAmount(newSubscriptionType);
+
+
+        if (subscriptionAmount == 500) newPrice = subscriptionAmount + (200 * currentSubscription.getNoOfScreensSubscribed());
+        else if (subscriptionAmount == 800) newPrice = subscriptionAmount + (250 * currentSubscription.getNoOfScreensSubscribed());
+        else if (subscriptionAmount == 1000) newPrice = subscriptionAmount + (350 * currentSubscription.getNoOfScreensSubscribed());
+
         int priceDifference = newPrice - currentPrice;
 
         currentSubscription.setSubscriptionType(newSubscriptionType);
@@ -85,8 +97,8 @@ public class SubscriptionService {
         return totalRevenue;
     }
     public int getSubscriptionTypeAmount(SubscriptionType subscriptionType) {
-        if (subscriptionType == SubscriptionType.BASIC) return 500 + 200;
-        else if (subscriptionType == SubscriptionType.PRO) return 800 + 250;
-        else return 1000 + 350;
+        if (subscriptionType == SubscriptionType.BASIC) return 500;
+        else if (subscriptionType == SubscriptionType.PRO) return 800;
+        else return 1000;
     }
 }
